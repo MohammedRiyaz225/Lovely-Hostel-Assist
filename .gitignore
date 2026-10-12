@@ -1,0 +1,29 @@
+# Android
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+*.jks
+*.keystore
+local.properties
+android/local.properties
+android/app/google-services.json
+
+# Backend & Python
+.venv/
+env/
+__pycache__/
+*.py[cod]
+backend/.env
+backend/firebase-service-account.json
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/ai/models/*.joblib
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

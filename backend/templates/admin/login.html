@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- backend/templates/admin/login.html -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>HostelFix – Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0;
+           display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .box { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 40px; width: 360px; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; color: #6366f1; }
+    p  { color: #94a3b8; font-size: .9rem; margin-bottom: 28px; }
+    label { display: block; font-size: .82rem; color: #94a3b8; margin-bottom: 4px; }
+    input { width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+            padding: 10px 14px; color: #e2e8f0; font-size: .95rem; margin-bottom: 16px; }
+    input:focus { outline: 2px solid #6366f1; border-color: #6366f1; }
+    button { width: 100%; padding: 11px; border: none; border-radius: 8px; background: #6366f1;
+             color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+    button:hover { opacity: .85; }
+    #err { display: none; background: #ef444420; border: 1px solid #ef4444; color: #f87171;
+           border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: .88rem; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <h1>🏠 HostelFix Admin</h1>
+  <p>Sign in to manage hostel complaints</p>
+  <div id="err"></div>
+  <label for="email">Email</label>
+  <input id="email" type="email" placeholder="admin@hostelfix.lpu" autocomplete="email"/>
+  <label for="pass">Password</label>
+  <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+  <button onclick="login()">Sign In</button>
+</div>
+<script>
+  const BASE = '';   // same origin
+  async function login() {
+    const email = document.getElementById('email').value.trim();
+    const pass  = document.getElementById('pass').value;
+    const errEl = document.getElementById('err');
+    errEl.style.display = 'none';
+
+    try {
+      const res  = await fetch(`${BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password: pass})
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Login failed');
+
+      if (data.user.role !== 'ADMIN') {
+        throw new Error('Access denied. Admin account required.');
+      }
+
+      localStorage.setItem('adminToken', data.access_token);
+      location.href = '/admin';
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.style.display = 'block';
+    }
+  }
+
+  // Press Enter to login
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+  // Already logged in?
+  if (localStorage.getItem('adminToken')) location.href = '/admin';
+</script>
+</body>
+</html>

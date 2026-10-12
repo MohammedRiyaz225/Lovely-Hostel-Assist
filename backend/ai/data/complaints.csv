@@ -1,0 +1,144 @@
+text,category,priority
+"Bathroom tap is leaking since yesterday, water is flooding the room",Plumbing,High
+"The toilet is not flushing properly in Block 34 room 204",Plumbing,High
+"Water supply has been cut off since morning, we cannot bathe",Plumbing,Critical
+"Pipe burst near room 105, water is flowing in the corridor",Plumbing,Critical
+"Shower is not working, only cold water comes out",Plumbing,Medium
+"Basin drain is blocked and water is not draining",Plumbing,Medium
+"Flush tank keeps running continuously wasting water",Plumbing,Low
+"Tap handle is broken and cannot be turned off",Plumbing,High
+"Sewage smell is coming from the bathroom drain",Plumbing,High
+"Overhead water tank is not getting filled, no water pressure",Plumbing,High
+"Light bulb in room 302 is fused and not working",Electrical,Low
+"Power socket is sparking when I plug in my charger",Electrical,Critical
+"Main power switch trips every time I turn on my laptop",Electrical,High
+"Electrical wiring is exposed near the window in my room",Electrical,Critical
+"Fan is not working in my room, very hot at night",Electrical,High
+"Tube light in the corridor of Block 35 has been broken for a week",Electrical,Medium
+"No electricity since last night in the entire wing",Electrical,Critical
+"Room heater socket is not giving power",Electrical,Medium
+"Ceiling fan is making loud noise and vibrating",Electrical,Medium
+"Extension board caught fire briefly in room 410",Electrical,Critical
+"Room has not been cleaned for three days, very dirty",Cleaning,High
+"Dustbin in the corridor is overflowing with garbage",Cleaning,High
+"Common toilet is very dirty and has bad smell",Cleaning,High
+"Cockroaches are visible in the bathroom and kitchen area",Cleaning,High
+"Bedsheets have not been changed for two weeks",Cleaning,Medium
+"Floor in the corridor is muddy and slippery",Cleaning,Medium
+"Mosquitoes are breeding in the stagnant water outside Block 36",Cleaning,High
+"Garbage collection has not happened for three days",Cleaning,High
+"Rats are seen near the dining area in the hostel",Cleaning,Critical
+"Mold is growing on the walls due to humidity",Cleaning,Medium
+"Mess food quality is very bad and not hygienic",Food,High
+"Rice served today was half-cooked and hard",Food,Medium
+"Vegetables served in dinner had insects in them",Food,Critical
+"Bread served at breakfast was stale and had mold",Food,Critical
+"Milk supplied in the morning was sour",Food,High
+"Only one dish was available at dinner, not enough variety",Food,Medium
+"Mess timings are too short, students miss meals",Food,Medium
+"Salt content in food is too high, health concern",Food,Low
+"Food served at night was cold and not fresh",Food,Medium
+"Vegetarian options are not available regularly",Food,Low
+"WiFi is not working in my room since two days",Internet/WiFi,High
+"Internet speed is very slow, cannot attend online class",Internet/WiFi,High
+"WiFi router in Block 40 wing B is down",Internet/WiFi,High
+"Network keeps disconnecting every few minutes",Internet/WiFi,Medium
+"Cannot connect to hostel WiFi, it does not appear in the list",Internet/WiFi,Medium
+"LAN cable port in the room is not working",Internet/WiFi,Medium
+"WiFi works only near the corridor, not inside the room",Internet/WiFi,Low
+"Internet is completely down in the entire hostel since morning",Internet/WiFi,Critical
+"WiFi password was changed without notice, cannot connect",Internet/WiFi,Medium
+"Network is very congested in the evening during peak hours",Internet/WiFi,Medium
+"Study table chair is broken, cannot sit properly",Furniture,Medium
+"Almirah lock is jammed and cannot open it",Furniture,Medium
+"Bed frame is broken and unsafe to sleep on",Furniture,High
+"Mattress is torn and there are springs poking out",Furniture,High
+"Window glass is broken in room 205, cold air enters at night",Furniture,High
+"Door hinge is broken, door is falling off",Furniture,High
+"Study lamp holder is cracked and bulb falls out",Furniture,Medium
+"Wardrobe shelf has collapsed inside the cupboard",Furniture,Medium
+"Room mirror is cracked and needs replacement",Furniture,Low
+"Curtain rod has fallen off the wall",Furniture,Low
+"Unknown person was seen entering the girls hostel at midnight",Security,Critical
+"Hostel gate is left open all night without security guard",Security,Critical
+"My laptop was stolen from room 301 while I was at class",Security,Critical
+"Room lock is broken and cannot be locked from outside",Security,Critical
+"CCTV camera near the staircase of Block 41 is not working",Security,High
+"Suspicious person was roaming in the corridor late at night",Security,High
+"A student was eve-teased near the hostel entrance",Security,Critical
+"Fire exit door is locked and cannot be opened in emergency",Security,Critical
+"Outsiders are entering the hostel freely without ID check",Security,High
+"Security guard is absent during night shift",Security,High
+"Wall paint is peeling off in large flakes in room 108",Maintenance,Low
+"Roof is leaking during rain, water drips on the bed",Maintenance,High
+"Door lock of room 204 is broken, cannot lock the room",Maintenance,High
+"Bathroom tiles are cracked and causing cuts to feet",Maintenance,High
+"Room window does not close properly, mosquitoes enter",Maintenance,Medium
+"Water is seeping through the wall when it rains",Maintenance,High
+"Staircase railing is loose and unsafe",Maintenance,High
+"Common room TV remote is not working",Maintenance,Low
+"Geyser in bathroom is not heating water",Maintenance,Medium
+"Room door is not closing properly, gap at the bottom",Maintenance,Low
+"Mold on the ceiling is causing breathing problems",Maintenance,High
+"Floor tiles are broken near the entrance, tripping hazard",Maintenance,High
+"Paint work in corridor is faded and walls look dirty",Maintenance,Low
+"Hot water supply for geyser has been off for a week",Maintenance,High
+"Drainage near Block 44 is blocked, water stagnating",Maintenance,High
+"Strong foul smell from drainage outside the hostel block",Plumbing,High
+"Washroom tap handle is loose and water keeps flowing",Plumbing,Medium
+"RO water purifier in the corridor is not working",Plumbing,High
+"Common bathroom door lock is broken",Maintenance,Medium
+"Gym equipment in the hostel gym is broken",Maintenance,Medium
+"Parking area lights are not working at night",Electrical,Medium
+"Lift in the hostel is out of service for two days",Maintenance,High
+"Water cooler near the common room is not cooling",Electrical,Medium
+"Reading room lights flicker continuously",Electrical,Medium
+"Vending machine in hostel is not dispensing items",Maintenance,Low
+"Mess staff behaving rudely with students",Food,Medium
+"Food portions served at dinner are very small",Food,Low
+"Canteen running out of snacks by evening",Food,Low
+"No hot water available in the mess for tea",Food,Low
+"WiFi signal does not reach room at the corner of the building",Internet/WiFi,Low
+"Ethernet cable in study room is damaged",Internet/WiFi,Medium
+"Intercom phone in my room is not working",Maintenance,Low
+"Call bell in room does not ring to warden office",Maintenance,Low
+"Bed bug infestation in room 112, biting at night",Cleaning,Critical
+"Ants are coming from wall crack into the food area",Cleaning,Medium
+"Drain on the roof is blocked, causing water overflow",Plumbing,High
+"Toilet flush handle is broken, cannot flush",Plumbing,Medium
+"New resident needs room allotment but hostel office is not responding",Other,Low
+"Room heater has stopped working in winter",Electrical,High
+"Fire extinguisher in the corridor is expired",Security,Critical
+"Smoke detector in room is beeping continuously",Security,High
+"Hostel warden is not available and there is an emergency",Other,Critical
+"Rats chewed through my laptop charger wire",Cleaning,High
+"Strong chemical smell from cleaning products making me sick",Cleaning,High
+"Students playing loud music late at night, cannot sleep",Other,Medium
+"No study space available in reading room, always crowded",Other,Low
+"Hostel laundry machine is out of order",Maintenance,Medium
+"Light in the study room is too dim for reading",Electrical,Low
+"Locker key of almirah is lost, need duplicate",Other,Low
+"Visitor registration system is not maintained at the gate",Security,Medium
+"Fire door is being propped open, defeating its purpose",Security,High
+"Dead cockroach smell from inside the false ceiling",Cleaning,High
+"Ant infestation in the kitchen area of the hostel block",Cleaning,High
+"Boiler for hot water supply has broken down in Block 35",Plumbing,Critical
+"Internet port in room 208 is broken, cable does not hold",Internet/WiFi,Medium
+"Printer in the common room is not working",Maintenance,Low
+"Common room projector bulb is blown",Maintenance,Low
+"Cafeteria near hostel closes too early at 9 PM",Food,Low
+"Food trays in the mess are dirty and not washed properly",Food,High
+"Mess bill deducted incorrectly for a meal I did not eat",Food,Low
+"Electrical switch board cover is missing, exposed wires visible",Electrical,Critical
+"Balcony railing of Block 41 floor 3 is loose",Maintenance,Critical
+"Smoke coming from electrical junction box in the corridor",Electrical,Critical
+"Water logging outside Block 36 entrance after rain",Maintenance,Medium
+"Main gate CCTV footage needed for police complaint",Security,High
+"Hostel curfew extended without notice causing issues",Other,Low
+"Roof water tank is dirty and has algae growth",Cleaning,High
+"Room mattress has urine stains and bad smell",Cleaning,High
+"New student joining, bed allocation not done yet",Other,Low
+"AC unit in the room is dripping water on the floor",Electrical,Medium
+"Exhaust fan in bathroom is making noise and not working",Electrical,Low
+"Corridor emergency exit sign light is not working",Electrical,Medium
+"Iron box in laundry area is not heating",Electrical,Low

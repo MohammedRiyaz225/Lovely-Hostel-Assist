@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- backend/templates/admin/base.html  – Jinja2 base layout for all admin pages -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HostelFix Admin {% block title %}{% endblock %}</title>
+  <style>
+    :root {
+      --bg: #0f172a; --surface: #1e293b; --border: #334155;
+      --accent: #6366f1; --accent2: #22d3ee; --text: #e2e8f0;
+      --muted: #94a3b8; --danger: #ef4444; --warn: #f59e0b;
+      --success: #22c55e; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+    /* Sidebar */
+    nav { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px 0; flex-shrink: 0; }
+    nav .logo { font-size: 1.3rem; font-weight: 700; color: var(--accent); padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+    nav a { display: block; padding: 10px 20px; color: var(--muted); text-decoration: none; border-radius: 6px; margin: 2px 8px; transition: all .2s; }
+    nav a:hover, nav a.active { background: rgba(99,102,241,.15); color: var(--text); }
+    /* Main area */
+    main { flex: 1; padding: 32px; overflow-y: auto; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 24px; }
+    h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 12px; }
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+    .stat-card .num { font-size: 2.4rem; font-weight: 700; color: var(--accent); }
+    .stat-card .label { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th { text-align: left; padding: 10px 12px; background: rgba(99,102,241,.1); color: var(--muted); font-weight: 600; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,.03); }
+    /* Badges */
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+    .badge-sub    { background:#6366f120; color:#818cf8; }
+    .badge-ai     { background:#06b6d420; color:#22d3ee; }
+    .badge-asgn   { background:#f59e0b20; color:#fbbf24; }
+    .badge-prog   { background:#8b5cf620; color:#a78bfa; }
+    .badge-res    { background:#22c55e20; color:#4ade80; }
+    .badge-feed   { background:#ec489920; color:#f472b6; }
+    .badge-clos   { background:#64748b20; color:#94a3b8; }
+    .badge-crit   { background:#ef444420; color:#f87171; }
+    .badge-high   { background:#f59e0b20; color:#fbbf24; }
+    .badge-med    { background:#6366f120; color:#818cf8; }
+    .badge-low    { background:#22c55e20; color:#4ade80; }
+    /* Buttons */
+    .btn { display: inline-block; padding: 8px 18px; border-radius: 6px; border: none; cursor: pointer; font-size: .9rem; font-weight: 600; transition: opacity .2s; }
+    .btn:hover { opacity: .85; }
+    .btn-primary  { background: var(--accent); color: #fff; }
+    .btn-danger   { background: var(--danger); color: #fff; }
+    .btn-ghost    { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    /* Form */
+    select, input[type=text], textarea { background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 8px 12px; font-size: .9rem; width: 100%; }
+    select:focus, input:focus, textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+    label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; }
+    .form-group { margin-bottom: 16px; }
+    /* Verified badge */
+    .verified   { color: var(--success); font-size: .8rem; }
+    .unverified { color: var(--danger);  font-size: .8rem; }
+    /* Alert bar */
+    #alert { display: none; padding: 12px 20px; border-radius: var(--radius); margin-bottom: 16px; font-weight: 500; }
+    #alert.show-ok  { display: block; background: #22c55e20; border: 1px solid var(--success); color: var(--success); }
+    #alert.show-err { display: block; background: #ef444420; border: 1px solid var(--danger);  color: var(--danger); }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<nav>
+  <div class="logo">🏠 HostelFix</div>
+  <a href="/admin"              id="nav-dash">📊 Dashboard</a>
+  <a href="/admin/complaints"   id="nav-comp">📋 Complaints</a>
+  <a href="/admin/insights"     id="nav-ins">🤖 AI Insights</a>
+  <a href="#" onclick="logout()">🚪 Logout</a>
+</nav>
+<main>
+  <div id="alert"></div>
+  {% block content %}{% endblock %}
+</main>
+<script>
+  // Highlight active nav link
+  const path = location.pathname;
+  if (path === '/admin')           document.getElementById('nav-dash').classList.add('active');
+  else if (path.includes('complaints')) document.getElementById('nav-comp').classList.add('active');
+  else if (path.includes('insights'))   document.getElementById('nav-ins').classList.add('active');
+
+  function getToken() { return localStorage.getItem('adminToken'); }
+
+  function logout() {
+    localStorage.removeItem('adminToken');
+    location.href = '/admin/login';
+  }
+
+  function showAlert(msg, ok = true) {
+    const el = document.getElementById('alert');
+    el.textContent = msg;
+    el.className = ok ? 'show-ok' : 'show-err';
+    setTimeout(() => el.className = '', 4000);
+  }
+
+  // Redirect to login if no token
+  if (!getToken() && location.pathname !== '/admin/login') {
+    location.href = '/admin/login';
+  }
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

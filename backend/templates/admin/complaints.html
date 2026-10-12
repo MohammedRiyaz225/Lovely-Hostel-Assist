@@ -1,0 +1,212 @@
+{% extends "admin/base.html" %}
+{% block title %} – Complaints{% endblock %}
+
+{% block content %}
+<h1>📋 Complaints</h1>
+
+<!-- Filters -->
+<div class="card" style="margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+  <div class="form-group" style="margin:0;flex:1;min-width:140px">
+    <label>Status</label>
+    <select id="f-status">
+      <option value="">All Statuses</option>
+      <option>SUBMITTED</option><option>AI_ANALYZED</option>
+      <option>ASSIGNED</option><option>IN_PROGRESS</option>
+      <option>RESOLVED</option><option>FEEDBACK</option><option>CLOSED</option>
+    </select>
+  </div>
+  <div class="form-group" style="margin:0;flex:1;min-width:140px">
+    <label>Block</label>
+    <input id="f-block" type="text" placeholder="e.g. 34"/>
+  </div>
+  <div class="form-group" style="margin:0;flex:1;min-width:140px">
+    <label>Location Verified</label>
+    <select id="f-verified">
+      <option value="">All</option>
+      <option value="true">Verified</option>
+      <option value="false">Unverified</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" onclick="loadComplaints()">Filter</button>
+</div>
+
+<!-- Detail panel (hidden initially) -->
+<div id="detail-panel" class="card" style="display:none;margin-bottom:20px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <h2 id="dp-title">–</h2>
+    <button class="btn btn-ghost" onclick="closeDetail()">✕ Close</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <p style="color:var(--muted);font-size:.85rem">Description</p>
+      <p id="dp-desc" style="margin-top:4px"></p>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <span id="dp-status"></span>
+        <span id="dp-priority"></span>
+        <span id="dp-category" class="badge badge-ai"></span>
+      </div>
+      <p style="margin-top:12px;font-size:.85rem;color:var(--muted)">
+        Block <strong id="dp-block"></strong> · Room <strong id="dp-room"></strong>
+        · <span id="dp-verified"></span>
+      </p>
+      <p style="margin-top:4px;font-size:.85rem;color:var(--muted)">
+        Department: <span id="dp-dept"></span>
+      </p>
+      <div id="dp-img" style="margin-top:12px"></div>
+    </div>
+    <div>
+      <div class="form-group">
+        <label>Assign to Staff</label>
+        <select id="dp-staff-sel"></select>
+      </div>
+      <div class="form-group">
+        <label>Admin Comment</label>
+        <textarea id="dp-comment" rows="2" placeholder="Optional note for staff…"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="assignStaff()">Assign</button>
+      <div style="margin-top:16px">
+        <div class="form-group">
+          <label>Update Status</label>
+          <select id="dp-new-status">
+            <option>SUBMITTED</option><option>AI_ANALYZED</option>
+            <option>ASSIGNED</option><option>IN_PROGRESS</option>
+            <option>RESOLVED</option><option>FEEDBACK</option><option>CLOSED</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Resolution Comment</label>
+          <textarea id="dp-res-comment" rows="2" placeholder="Optional resolution note…"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="updateStatus()">Update Status</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Complaints table -->
+<div class="card">
+  <table>
+    <thead><tr>
+      <th>Title</th><th>Block</th><th>Status</th><th>Priority</th>
+      <th>Category</th><th>Verified</th><th>Date</th><th></th>
+    </tr></thead>
+    <tbody id="comp-body"></tbody>
+  </table>
+  <p id="empty-msg" style="display:none;color:var(--muted);padding:20px;text-align:center">No complaints match these filters.</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const API = '/api';
+const T   = getToken();
+const H   = {Authorization:`Bearer ${T}`, 'Content-Type':'application/json'};
+let currentId = null;
+
+function statusBadge(s) {
+  const m = {SUBMITTED:'sub',AI_ANALYZED:'ai',ASSIGNED:'asgn',IN_PROGRESS:'prog',RESOLVED:'res',FEEDBACK:'feed',CLOSED:'clos'};
+  return `<span class="badge badge-${m[s]||'sub'}">${s}</span>`;
+}
+function priorityBadge(p) {
+  if (!p) return '–';
+  const c = {Critical:'crit',High:'high',Medium:'med',Low:'low'}[p]||'low';
+  return `<span class="badge badge-${c}">${p}</span>`;
+}
+
+async function loadComplaints() {
+  const status   = document.getElementById('f-status').value;
+  const block    = document.getElementById('f-block').value.trim();
+  const verified = document.getElementById('f-verified').value;
+
+  let url = `${API}/admin/complaints?`;
+  if (status)   url += `status=${status}&`;
+  if (block)    url += `hostelBlock=${block}&`;
+  if (verified) url += `locationVerified=${verified}&`;
+
+  const data = await fetch(url, {headers:{Authorization:`Bearer ${T}`}}).then(r=>r.json());
+  const tbody = document.getElementById('comp-body');
+  const empty = document.getElementById('empty-msg');
+
+  if (!data.length) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td>${c.title}</td>
+      <td>Block ${c.hostelBlock}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td>${priorityBadge(c.ai?.priority)}</td>
+      <td><span class="badge badge-ai">${c.ai?.category||'–'}</span></td>
+      <td>${c.locationVerified?'<span class="verified">✔ Yes</span>':'<span class="unverified">✖ No</span>'}</td>
+      <td>${new Date(c.createdAt).toLocaleDateString()}</td>
+      <td><button class="btn btn-ghost" style="padding:4px 10px;font-size:.8rem" onclick="openDetail('${c.id}')">View</button></td>
+    </tr>`).join('');
+}
+
+async function openDetail(id) {
+  currentId = id;
+  const c = await fetch(`${API}/complaints/${id}`, {headers:{Authorization:`Bearer ${T}`}}).then(r=>r.json());
+
+  document.getElementById('dp-title').textContent    = c.title;
+  document.getElementById('dp-desc').textContent     = c.description;
+  document.getElementById('dp-block').textContent    = c.hostelBlock;
+  document.getElementById('dp-room').textContent     = c.roomNumber;
+  document.getElementById('dp-dept').textContent     = c.ai?.department || '–';
+  document.getElementById('dp-status').innerHTML     = statusBadge(c.status);
+  document.getElementById('dp-priority').innerHTML   = priorityBadge(c.ai?.priority);
+  document.getElementById('dp-category').textContent = c.ai?.category || '–';
+  document.getElementById('dp-verified').innerHTML   = c.locationVerified
+    ? '<span class="verified">✔ GPS Verified</span>'
+    : '<span class="unverified">✖ Not Verified</span>';
+  document.getElementById('dp-new-status').value = c.status;
+  document.getElementById('dp-img').innerHTML = c.imageUrl
+    ? `<img src="${c.imageUrl}" style="max-width:100%;border-radius:8px;margin-top:8px"/>`
+    : '';
+
+  // Load staff list
+  const staff = await fetch(`${API}/admin/staff`, {headers:{Authorization:`Bearer ${T}`}}).then(r=>r.json());
+  const sel   = document.getElementById('dp-staff-sel');
+  sel.innerHTML = '<option value="">– Select staff –</option>' +
+    staff.map(s=>`<option value="${s.id}">${s.name} (${s.department||s.role})</option>`).join('');
+
+  document.getElementById('detail-panel').style.display = 'block';
+  document.getElementById('detail-panel').scrollIntoView({behavior:'smooth'});
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').style.display = 'none';
+  currentId = null;
+}
+
+async function assignStaff() {
+  const staffId = document.getElementById('dp-staff-sel').value;
+  if (!staffId) { showAlert('Please select a staff member.', false); return; }
+  const comment = document.getElementById('dp-comment').value;
+  const res = await fetch(`${API}/admin/complaints/${currentId}/assign`, {
+    method: 'PATCH', headers: H,
+    body: JSON.stringify({staff_id: staffId, admin_comment: comment})
+  });
+  if (res.ok) { showAlert('Staff assigned successfully!'); loadComplaints(); }
+  else        { showAlert((await res.json()).detail, false); }
+}
+
+async function updateStatus() {
+  const newStatus = document.getElementById('dp-new-status').value;
+  const rc        = document.getElementById('dp-res-comment').value;
+  const res = await fetch(`${API}/admin/complaints/${currentId}/status`, {
+    method: 'PATCH', headers: H,
+    body: JSON.stringify({new_status: newStatus, resolution_comment: rc})
+  });
+  if (res.ok) { showAlert('Status updated!'); loadComplaints(); }
+  else        { showAlert((await res.json()).detail, false); }
+}
+
+// Auto-open from dashboard link
+const params = new URLSearchParams(location.search);
+if (params.get('id')) {
+  loadComplaints().then(() => openDetail(params.get('id')));
+} else {
+  loadComplaints();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HostelFix" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+    <!-- Alias for compatibility if referenced in manifest -->
+    <style name="Theme.AppCompat.DayNight.NoActionBar" parent="Theme.HostelFix" />
+</resources>
