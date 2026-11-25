@@ -1,29 +1,44 @@
-# Android
-.gradle/
-build/
-app/build/
-*.apk
-*.aab
-*.jks
-*.keystore
-local.properties
-android/local.properties
-android/app/google-services.json
+# Root-level AI Studio workspace duplicates (canonical project lives in android/)
+/app/
+/build.gradle.kts
+/settings.gradle.kts
+/gradle/
+/gradle.properties
+/.aistudio/
+/.env.example
+/metadata.json
+/public/
 
-# Backend & Python
-.venv/
-env/
+# Android
+*.iml
+.gradle
+.kotlin
+/local.properties
+/.idea
+.idea/
+.DS_Store
+/build
+app/build/
+build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.env
+*.env
+debug.keystore
+
+# Python & Backend
 __pycache__/
 *.py[cod]
-backend/.env
-backend/firebase-service-account.json
-backend/uploads/*
-!backend/uploads/.gitkeep
-backend/ai/models/*.joblib
+*$py.class
+*.db
+*.sqlite3
+backend/hostelfix.db
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/routers/__pycache__/
+.venv/
+venv/
+env/
 
-# IDE & OS
-.idea/
-.vscode/
-*.iml
-.DS_Store
-Thumbs.db

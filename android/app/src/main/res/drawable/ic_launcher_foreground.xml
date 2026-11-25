@@ -1,31 +1,8 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <group
-        android:scaleX="0.55"
-        android:scaleY="0.55"
-        android:translateX="24.3"
-        android:translateY="24.3">
-        <!-- Building silhouette -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M24,84 L24,24 L60,24 L60,84 Z" />
-        <path
-            android:fillColor="#E2E8F0"
-            android:pathData="M60,40 L60,84 L84,84 L84,40 Z" />
-        <!-- Windows -->
-        <path
-            android:fillColor="#EA580C"
-            android:pathData="M32,32h8v8h-8z M44,32h8v8h-8z M32,44h8v8h-8z M44,44h8v8h-8z M32,56h8v8h-8z M44,56h8v8h-8z M68,48h8v8h-8z M68,60h8v8h-8z" />
-        <!-- Verification Shield Badge -->
-        <path
-            android:fillColor="#10B981"
-            android:pathData="M78,16 C78,16 68,14 62,8 C56,14 46,16 46,16 C46,28 54,42 62,48 C70,42 78,28 78,16 Z" />
-        <!-- Checkmark inside shield -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M59,29 L54,24 L56,22 L59,25 L68,16 L70,18 Z" />
-    </group>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="66dp"
+        android:height="66dp"
+        android:drawable="@drawable/ic_app_foreground_img"
+        android:gravity="center" />
+</layer-list>

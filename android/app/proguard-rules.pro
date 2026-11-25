@@ -1,34 +1,21 @@
-# ProGuard / R8 Rules for HostelFix Release Build
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
 
-# Keep Data Models for GSON Serialization
--keepattributes *Annotation*
--keepattributes Signature
--keepclassmembers class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
--keep class com.hostelfix.data.model.** { *; }
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
 
-# Retrofit 2
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepattributes EnclosingMethod, InnerClasses
--keepclassmembers,allowshrinking,allowoptimization interface * {
-    @retrofit2.http.* <methods>;
-}
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
 
-# OkHttp 3
--dontwarn okhttp3.**
--dontwarn okio.**
--keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-
-# Coroutines
--dontwarn kotlinx.coroutines.**
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
-
-# Google Maps & Play Services
--keep class com.google.android.gms.maps.** { *; }
--keep interface com.google.android.gms.maps.** { *; }
-
-# Coil
--dontwarn coil.**
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile

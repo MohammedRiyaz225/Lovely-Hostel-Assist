@@ -1,139 +1,82 @@
-# HostelFix (HostelSense)
-### AI-Powered, Location-Verified Hostel Complaint Management System
+# HostelFix (Lovely Hostel Assist)
+### AI-Powered Hostel Complaint & Maintenance Management System
 **College Project for Lovely Professional University (LPU), Punjab**
 
 ---
 
 ## 🌟 Overview
-**HostelFix** replaces paper registers and manual phone calls with a digital hostel complaint tracking system tailored for Lovely Professional University.
+**HostelFix** replaces paper registers and manual phone calls with an AI-powered hostel complaint & maintenance management system tailored for **Lovely Professional University (LPU)**.
 
 ### Key Capabilities
-- 📍 **GPS Geofence Verification**: Confirms student is physically inside their hostel block via Google Maps & FusedLocationProvider before prioritizing complaints.
-- 🤖 **Native AI/NLP Engine**:
-  - Automatically classifies category (Plumbing, Electrical, Carpentry, Wi-Fi, Housekeeping).
-  - Estimates priority (`Low`, `Medium`, `High`, `Critical`).
-  - Predicts responsible repair department.
-  - Detects duplicate complaints using TF-IDF and Cosine Similarity.
-  - Analyzes resident sentiment polarity.
-- 📱 **Modern Android App**: 100% Kotlin with Jetpack Compose & Material 3, MVVM, Retrofit, Coroutines, DataStore, and Coil.
-- 💻 **Admin Web Dashboard**: Interactive Jinja2 + HTML/CSS/JS portal for wardens to manage complaints, assign staff, and track resolution metrics.
-- 🔔 **Push Notifications**: Firebase Cloud Messaging (FCM) dispatching alerts at each resolution step.
-- ⭐ **Feedback Loop**: 5-star rating system with remarks once repairs are completed.
+- 🤖 **On-Device & Cloud AI Engine**:
+  - **Automated Category Classification**: Plumbing, Electrical, Cleaning, Wi-Fi, Food, Furniture, Security, General.
+  - **Priority Prediction**: Critical, High, Medium, Low.
+  - **Department Routing**: Automatically assigns tickets to the right LPU division (e.g., *LPU Estate Maintenance*, *Electrical Substations*, *NetOps Campus IT*).
+  - **Duplicate Detection**: Detects similar active complaints in the same hostel block using token similarity.
+  - **Sentiment Analysis**: Detects urgency and frustration levels.
+- 💬 **Groq AI Campus Assistant**:
+  - Built-in conversational AI assistant powered by Groq (`Llama 3.3 70B` / `Llama 3.1 8B`) with specialized knowledge of all 18+ LPU hostel blocks (`BH-1`..`BH-8`, `GH-1`..`GH-6`, `Uni-Living`, `Block 34/36/38/55/56`), emergency helplines, and troubleshooting steps, plus offline fallback guidance.
+- 📱 **Modern Offline-First Android App**:
+  - Built in **100% Kotlin + Jetpack Compose + Material 3**.
+  - **Room (SQLite)** local database for instant offline support + **Retrofit** asynchronous sync with the FastAPI backend.
+  - Role-based access for **Students**, **Wardens**, and **Maintenance Staff**.
+- 💻 **Python FastAPI Backend & Warden Web Portal**:
+  - FastAPI REST API matching the Android Retrofit contract (`/api/auth/login`, `/api/complaints`, `/api/complaints/{id}/status`, `/api/staff`).
+  - Interactive **Jinja2 Warden Web Dashboard** (`/admin`) to triage tickets, filter by block/status, assign technicians, and add work notes.
+  - Zero-config SQLite persistence (`hostelfix.db`) with pre-seeded campus tickets.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
 
 ```
-                  +-----------------------------------+
-                  |      Android App (Student)        |
-                  |  - Jetpack Compose (Material 3)   |
-                  |  - Google Maps & GPS Geofence     |
-                  |  - Retrofit HTTP + JWT Auth       |
-                  |  - Firebase Cloud Messaging (FCM) |
-                  +-----------------------------------+
-                                    |
-                            HTTP / JSON (REST)
-                                    v
-+--------------------------------------------------------------------------+
-|                       FastAPI Backend Server                             |
-|  - Asynchronous endpoints (Python 3.10+)                                 |
-|  - JWT Authentication (bcrypt passwords)                                 |
-|  - Haversine GPS Distance Calculation                                    |
-|  - Admin Web Dashboard (Jinja2 Templates)                                |
-|  - AI/NLP Subsystem:                                                     |
-|      * TF-IDF & Logistic Regression Category Classifier                  |
-|      * Cosine Similarity Duplicate Ingestion Filter                      |
-|      * Priority & Department Recommendation Rules                        |
-+--------------------------------------------------------------------------+
-            |                                               |
-            v                                               v
-+-----------------------+                       +-----------------------+
-|  MongoDB Atlas DB     |                       | Local Media Storage   |
-|  - users              |                       | - uploads/ (Photos)   |
-|  - hostels            |                       | - ai/models/*.joblib  |
-|  - complaints         |                       +-----------------------+
-|  - notifications      |
-+-----------------------+
+Lovely-Hostel-Assist/
+├── android/               # Native Kotlin + Jetpack Compose Android App
+│   ├── app/               # Source code, Room DB, Groq client, UI screens
+│   ├── build.gradle.kts
+│   └── settings.gradle.kts
+├── backend/               # Python FastAPI Server & Jinja2 Warden Portal
+│   ├── app/
+│   │   ├── ai_engine.py   # Server-side classification, priority & duplicate detection
+│   │   ├── database.py    # SQLite persistence & seed data
+│   │   ├── models.py      # Pydantic schemas
+│   │   ├── routers/       # Auth, Complaints & Admin Web Portal routes
+│   │   └── templates/     # Jinja2 HTML dashboard
+│   ├── main.py
+│   ├── run.py
+│   ├── start.bat
+│   └── test_api.py
+├── docs/                  # SRS, API Reference, Database & AI Documentation
+└── README.md
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Quick Start
 
-### 1. Backend Setup & Run
+### 1. Run the Backend Server
+```powershell
+cd backend
+python run.py
+```
+Or double-click `backend/start.bat` on Windows.
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
+Once running:
+* **Warden Web Portal**: `http://localhost:8000/admin`
+* **Swagger API Docs**: `http://localhost:8000/docs`
+* **Health Check**: `http://localhost:8000/api/health`
 
-2. Create and activate a Python virtual environment:
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # Linux/Mac:
-   source .venv/bin/activate
-   ```
-
-3. Install requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Configure environment:
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Set your MongoDB Atlas URI in `.env` (or use local MongoDB: `mongodb://localhost:27017`).
-
-5. Seed Initial Data (Hostel blocks & maintenance staff):
-   ```bash
-   python seed_hostels.py
-   python seed_staff.py
-   ```
-
-6. Train AI Classifier:
-   ```bash
-   python -m ai.train
-   ```
-
-7. Start the server:
-   ```bash
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-   - API Docs: `http://localhost:8000/docs`
-   - Admin Panel: `http://localhost:8000/admin`
-   - Health Check: `http://localhost:8000/health`
+### 2. Run the Android App
+1. Open the `android/` folder in **Android Studio**.
+2. Create `.env` from `android/.env.example` and add your `GROQ_API_KEY` (optional — offline fallback works without a key).
+3. Run on an **Android Emulator** (`http://10.0.2.2:8000/` connects automatically to your local backend) or a **Physical Device** (set your PC's Wi-Fi IP in the app's Profile screen under *Python FastAPI Backend Endpoint*).
 
 ---
 
-### 2. Android App Setup & Run
-
-1. Open the `android` folder in **Android Studio** (Ladybug or newer recommended).
-2. Ensure you have Android SDK 35 installed.
-3. Configure `android/local.properties`:
-   ```properties
-   MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
-   ```
-4. Run on Android Emulator or physical device connected via USB:
-   - For emulator: The app connects to the backend at `http://10.0.2.2:8000/`.
-   - For physical device: Set your computer's local Wi-Fi IP address in `ApiClient.kt`.
-
----
-
-## 📚 Project Documentation
-
-Detailed design specifications can be found under `docs/`:
+## 📚 Documentation
+Detailed specifications can be found in [`docs/`](docs/):
 - [SRS.md](docs/SRS.md) – Software Requirements Specification
-- [API.md](docs/API.md) – Full REST API Reference
-- [DATABASE.md](docs/DATABASE.md) – MongoDB Schema & Collection Architecture
+- [API.md](docs/API.md) – REST API Reference
+- [DATABASE.md](docs/DATABASE.md) – Database Schema
 - [AI_MODULE.md](docs/AI_MODULE.md) – AI & NLP Subsystem Architecture
-- [TEST_CHECKLIST.md](docs/TEST_CHECKLIST.md) – Comprehensive Testing and Viva Presentation Guide
-
----
-
-## 👥 Contributors
-Developed for Lovely Professional University (LPU) as a final-year college project.
+- [TEST_CHECKLIST.md](docs/TEST_CHECKLIST.md) – Testing Guide
