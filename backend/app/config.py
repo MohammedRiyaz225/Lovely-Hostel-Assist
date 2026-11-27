@@ -9,8 +9,12 @@ class Settings(BaseSettings):
     PORT: int = 8000
     DEBUG: bool = True
 
-    # Database: uses SQLite by default, falls back to MongoDB if MONGODB_URI is provided
-    SQLITE_DB_PATH: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "hostelfix.db")
+    # Database: uses /tmp on Vercel (read-only app dir), local SQLite otherwise
+    SQLITE_DB_PATH: str = (
+        "/tmp/hostelfix.db"
+        if os.getenv("VERCEL")
+        else os.path.join(os.path.dirname(os.path.dirname(__file__)), "hostelfix.db")
+    )
     MONGODB_URI: Optional[str] = os.getenv("MONGODB_URI", None)
     MONGODB_DB_NAME: str = "hostelfix"
 

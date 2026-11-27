@@ -1,5 +1,6 @@
 import os
-from fastapi import APIRouter, Request, Form, status
+from fastapi import APIRouter, Request, Form
+from fastapi import status as http_status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from app.database import db
@@ -57,4 +58,4 @@ async def update_complaint_from_admin(
 ):
     assigned = assigned_to if (assigned_to and assigned_to != "None") else None
     db.update_complaint_status(complaint_id=id, status=status, assigned_to=assigned, note=note)
-    return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(url="/admin", status_code=http_status.HTTP_303_SEE_OTHER)

@@ -64,6 +64,15 @@ async def run_all_tests():
         assert res.status_code == 200
         assert "HostelFix" in res.text
 
+        print(f"\nTesting POST /admin/complaint/{cid}/update (Admin form update)...")
+        res = await client.post(
+            f"/admin/complaint/{cid}/update",
+            data={"status": "RESOLVED", "assigned_to": "Ramesh Kumar", "note": "Verified from admin"},
+            follow_redirects=False
+        )
+        print(f" -> Status: {res.status_code}")
+        assert res.status_code == 303
+
     print("\n==========================================")
     print("🎉 ALL API & DASHBOARD TESTS PASSED! ✅")
     print("==========================================")
